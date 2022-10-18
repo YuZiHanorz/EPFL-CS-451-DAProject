@@ -175,8 +175,8 @@ int main(int argc, char **argv) {
       sprintf(msg, "%-1d%03lu%-d", ack, pid, i);
       links[tPid-1]->addMsg(msg);
     }
+    std::cout << pid << " add " << num << " msgs to " << tPid << "\n";
   }
-  std::cout << pid << " add " << num << " msgs to " << tPid << "\n";
 
   for (auto& link: links) {
     if (link != nullptr) {

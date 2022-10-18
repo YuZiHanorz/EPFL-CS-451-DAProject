@@ -1,0 +1,430 @@
+Source files that end in .c will be compiled automatically with gcc,
+while source files that end in .cpp will be compiled automatically with g++.
+For those that prefer C, they can either use the provided C++
+argument parser and write everything else in C, or delete the
+provided main.cpp and start from scratch.
+Those who have both .c and .cpp files should ensure to have a compatible ABI when calling C functions from C++ (see `hello.h` on how to do this).
+
+My PID: 11132
+From a new terminal type `kill -SIGINT 11132` or `kill -SIGTERM 11132` to stop processing packets
+
+My ID: 3
+
+List of resolved hosts is:
+==========================
+1
+Human-readable IP: 127.0.0.1
+Machine-readable IP: 16777343
+Human-readbale Port: 11001
+Machine-readbale Port: 63786
+
+2
+Human-readable IP: 127.0.0.1
+Machine-readable IP: 16777343
+Human-readbale Port: 11002
+Machine-readbale Port: 64042
+
+3
+Human-readable IP: 127.0.0.1
+Machine-readable IP: 16777343
+Human-readbale Port: 11003
+Machine-readbale Port: 64298
+
+4
+Human-readable IP: 127.0.0.1
+Machine-readable IP: 16777343
+Human-readbale Port: 11004
+Machine-readbale Port: 64554
+
+
+Path to output:
+===============
+/home/dcl/daProject/EPFL-CS-451-DAProject/test/proc03.output
+
+Path to config:
+===============
+../test/config
+
+Doing some initialization...
+
+Broadcasting and delivering messages...
+
+3 add 5 msgs to 1
+3 send msg 00031 to 1
+3 send msg 00032 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 receive ack 0032 from 4
+3 receive ack 0031 from 2
+3 send msg 00032 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00032 to 1
+3 send msg 00033 to 1
+3 receive ack 0032 from 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 receive ack 0034 from 4
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 receive ack 0031 from 2
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 receive ack 0034 from 4
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 receive ack 0033 from 2
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 receive ack 0034 from 4
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00033 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 receive ack 0033 from 4
+3 send msg 00033 to 1
+3 receive ack 0035 from 2
+3 send msg 00034 to 1
+3 receive ack 0033 from 1
+3 send msg 00035 to 1
+3 send msg 00031 to 1
+3 send msg 00034 to 1
+3 receive ack 0031 from 4
+3 send msg 00035 to 1
+3 receive ack 0035 from 2
+3 send msg 00031 to 1
+3 send msg 00034 to 1
+3 send msg 00035 to 1
+3 receive ack 0035 from 1
+3 send msg 00031 to 1
+3 send msg 00034 to 1
+3 send msg 00031 to 1
+3 receive ack 0031 from 4
+3 send msg 00034 to 1
+3 send msg 00031 to 1
+3 send msg 00034 to 1
+3 send msg 00031 to 1
+3 receive ack 0031 from 4
+3 send msg 00034 to 1
+3 send msg 00031 to 1
+3 send msg 00034 to 1
+3 send msg 00031 to 1
+3 send msg 00034 to 1
+3 receive ack 0034 from 2
+3 send msg 00031 to 1
+3 send msg 00034 to 1
+3 send msg 00031 to 1
+3 send msg 00034 to 1
+3 send msg 00031 to 1
+3 receive ack 0031 from 1
+3 send msg 00034 to 1
+3 send msg 00034 to 1
+3 receive ack 0034 from 4
+3 send msg 00034 to 1
+3 send msg 00034 to 1
+3 send msg 00034 to 1
+3 receive ack 0034 from 2
+3 send msg 00034 to 1
+3 send msg 00034 to 1
+3 send msg 00034 to 1
+3 receive ack 0034 from 1
+Immediately stopping network packet processing.
+Writing output.
+the log is b0031
+the log is b0032
+the log is b0033
+the log is b0034
+the log is b0035
