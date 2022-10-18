@@ -55,7 +55,7 @@ void PerfectLink::sendT(){
                         std::string logMsg = 'b' + m.substr(1,m.size());
                         p->addLog(logMsg);
                     }
-                    std::cout << pid << " send msg " << m << " to " << targetPid << "\n";
+                    //std::cout << pid << " send msg " << m << " to " << targetPid << "\n";
                     sen->send(m);
                     std::this_thread::sleep_for(std::chrono::milliseconds(1));
                 }
@@ -84,13 +84,13 @@ void PerfectLink::recT(){
                     std::string logMsg = 'd' + deliverMsg;
                     p->addLog(logMsg);
                 }
-                std::cout << pid << " receive " << deliverMsg << " from " << targetPid << "\n";
+                //std::cout << pid << " receive " << deliverMsg << " from " << targetPid << "\n";
                 res[0] = '1';
                 std::lock_guard<std::mutex> lock(ackMutex);
                 pendingAcks.push_back(res);
             }
             else if (pid == msgSpid && ack == "1"){ //receive an ack from the other end
-                std::cout << pid << " receive ack " << deliverMsg << " from " << targetPid << "\n";
+                //std::cout << pid << " receive ack " << deliverMsg << " from " << targetPid << "\n";
                 res[0] = '0';
                 std::lock_guard<std::mutex> lock(msgMutex);
                 pendingMsgs.remove(res);
@@ -112,7 +112,7 @@ void PerfectLink::ackT(){
             pendingAcks.unique();
             if (!pendingAcks.empty()){
                 for (auto& a: pendingAcks){
-                    std::cout << pid << " send ack " << a << " to " << targetPid << "\n";
+                    //std::cout << pid << " send ack " << a << " to " << targetPid << "\n";
                     sen->send(a);
                     std::this_thread::sleep_for(std::chrono::milliseconds(1));
                 }

@@ -38,7 +38,7 @@ void writeLog() {
   std::list<std::string> logs = p->getLogs();
   for (auto& log: logs){
     char logType = log[0];
-    std::cout << "the log is " << log << "\n";
+    //std::cout << "the log is " << log << "\n";
     int msgSpid;
     std::string payload;
     switch (logType){
@@ -175,7 +175,7 @@ int main(int argc, char **argv) {
       sprintf(msg, "%-1d%03lu%-d", ack, pid, i);
       links[tPid-1]->addMsg(msg);
     }
-    std::cout << pid << " add " << num << " msgs to " << tPid << "\n";
+    //std::cout << pid << " add " << num << " msgs to " << tPid << "\n";
   }
 
   for (auto& link: links) {
