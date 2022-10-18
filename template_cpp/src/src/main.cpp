@@ -75,7 +75,6 @@ static void stop(int) {
     p->stop();
   if (rec != nullptr)
     rec->stop();
-
   for (auto& link: links) {
     if (link != nullptr) 
       link->stop();
