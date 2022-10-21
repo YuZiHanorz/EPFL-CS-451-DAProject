@@ -29,11 +29,13 @@ private:
 
     std::list<std::string> pendingMsgs, pendingAcks;
 
-    std::mutex logMutex, msgMutex, ackMutex;
+    std::mutex logMutex, msgMutex, ackMutex, linkMutex;
 
     std::thread recThread;
     std::thread sendThread;
     std::thread ackThread;
+
+    std::vector<PerfectLink*> others;
 
 public:
     PerfectLink(int _pid, int _targetPid, Receiver* _rec, Sender* _sen, Process* _p);
@@ -48,6 +50,10 @@ public:
 
     void addMsg(const std::string msg);
     void addMsgs(const std::list<std::string> msgs);
+
+    void setOthers(std::vector<PerfectLink*> _others);
+    void removeMsg(const std::string& msg);
+    void addAck(const std::string& ack);
 };
 
 #endif // pLink

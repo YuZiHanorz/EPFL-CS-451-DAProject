@@ -61,7 +61,7 @@ void PerfectLink::sendT(){
                 }
             }
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        std::this_thread::sleep_for(std::chrono::milliseconds(3));
     }
 }
 
@@ -75,10 +75,11 @@ void PerfectLink::recT(){
             std::string res{buffer};
             std::string ack = res.substr(0, 1);
             int msgSpid = stoi(res.substr(1, 3));
-            std::string payload = res.substr(4, res.size());
+            int msgTpid = stoi(res.substr(4, 3));
+            std::string payload = res.substr(7, res.size());
             std::string deliverMsg = res.substr(1, res.size());
 
-            if(targetPid == msgSpid &&  ack == "0"){ //receive a msg from the other end of the link
+            if(pid == msgTpid &&  ack == "0"){ //receive a msg from the other end of the link
                 if (p != nullptr){
                     std::lock_guard<std::mutex> lock(logMutex);
                     std::string logMsg = 'd' + deliverMsg;
@@ -86,17 +87,33 @@ void PerfectLink::recT(){
                 }
                 //std::cout << pid << " receive " << deliverMsg << " from " << targetPid << "\n";
                 res[0] = '1';
-                std::lock_guard<std::mutex> lock(ackMutex);
-                pendingAcks.push_back(res);
+                if (targetPid == msgSpid){
+                    std::lock_guard<std::mutex> lock(ackMutex);
+                    pendingAcks.push_back(res);
+                }
+                else {
+                    std::lock_guard<std::mutex> lock(linkMutex);
+                    PerfectLink* l = others[static_cast<unsigned long>(msgTpid)-1];
+                    if (l != nullptr)
+                        l->addAck(res);
+                }
             }
             else if (pid == msgSpid && ack == "1"){ //receive an ack from the other end
                 //std::cout << pid << " receive ack " << deliverMsg << " from " << targetPid << "\n";
                 res[0] = '0';
-                std::lock_guard<std::mutex> lock(msgMutex);
-                pendingMsgs.remove(res);
+                if (targetPid == msgTpid){
+                    std::lock_guard<std::mutex> lock(msgMutex);
+                    pendingMsgs.remove(res);
+                }
+                else{
+                    std::lock_guard<std::mutex> lock(linkMutex);
+                    PerfectLink* l = others[static_cast<unsigned long>(msgTpid)-1];
+                    if (l != nullptr)
+                        l->removeMsg(res);
+                }
             }
-            //else 
-                //std::cerr << "receive unexpected message "<< res << " with " << pid << targetPid << msgSpid << ack <<"\n"; 
+            else 
+                std::cerr << "receive unexpected message "<< res << " with " << pid << targetPid << msgSpid << ack <<"\n"; 
             
         }
     }
@@ -122,6 +139,18 @@ void PerfectLink::ackT(){
     }
 }
 
+void PerfectLink::setOthers(std::vector<PerfectLink*> _others) {
+    this->others = _others;
+}
 
+void PerfectLink::removeMsg(const std::string& msg) {
+    std::lock_guard<std::mutex> lock(msgMutex);
+    pendingMsgs.remove(msg);
+}
 
+void PerfectLink::addAck(const std::string& ack) {
+
+    std::lock_guard<std::mutex> lock(ackMutex);
+    pendingAcks.push_back(ack);
+}
 

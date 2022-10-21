@@ -43,12 +43,12 @@ void writeLog() {
     std::string payload;
     switch (logType){
     case 'b':
-      payload = log.substr(4, log.size());
+      payload = log.substr(7, log.size());
       o << "b " << payload << "\n";
       break;
     case 'd':
       msgSpid = stoi(log.substr(1, 3));
-      payload = log.substr(4, log.size());
+      payload = log.substr(7, log.size());
       o << "d " << msgSpid << " " << payload << "\n";
       break;
     default:
@@ -150,6 +150,12 @@ int main(int argc, char **argv) {
     senders.push_back(sen);
     links.push_back(link);
   }
+  for (auto& link: links) {
+    if (link != nullptr) {
+      link->setOthers(links);
+    }
+  }
+  //std::cout << "here" << "\n";
 
   std::string _num, _tPid;
   std::string line;
@@ -171,7 +177,7 @@ int main(int argc, char **argv) {
     for (unsigned int i = 1; i <= num; ++i){
       char msg[MAX_LENGTH] = {0};
       int ack = 0;
-      sprintf(msg, "%-1d%03lu%-d", ack, pid, i);
+      sprintf(msg, "%-1d%03lu%03lu%-d", ack, pid, tPid, i);
       links[tPid-1]->addMsg(msg);
     }
     //std::cout << pid << " add " << num << " msgs to " << tPid << "\n";
