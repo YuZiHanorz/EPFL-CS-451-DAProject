@@ -17,15 +17,17 @@
 #include <string>
 #include <list>
 
+class Beb;
+
 class PerfectLink
 {
 private:
     std::atomic<bool> active;
     int pid;
-    int targetPid;
+    std::vector<int> targetPids;
     Receiver* rec;
     Sender* sen;
-    Process* p;
+    Beb* beb;
 
     std::list<std::string> pendingMsgs, pendingAcks;
 
@@ -35,25 +37,21 @@ private:
     std::thread sendThread;
     std::thread ackThread;
 
-    std::vector<PerfectLink*> others;
+    //std::vector<PerfectLink*> others;
 
 public:
-    PerfectLink(int _pid, int _targetPid, Receiver* _rec, Sender* _sen, Process* _p);
+    PerfectLink(int _pid, std::vector<int> _targetPids, Receiver* _rec, Sender* _sen);
     ~PerfectLink();
 
     void sendT();
     void recT();
-    void ackT();
 
     void start();
     void stop();
 
-    void addMsg(const std::string msg);
-    void addMsgs(const std::list<std::string> msgs);
-
-    void setOthers(std::vector<PerfectLink*> _others);
-    void removeMsg(const std::string& msg);
-    void addAck(const std::string& ack);
+    void addMsg(const std::string& msg);
+    void addMsgs(const std::list<std::string>& msgs);
+    void setBroadcast(Beb* _beb);
 };
 
 #endif // pLink

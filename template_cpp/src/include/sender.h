@@ -8,6 +8,7 @@
 
 #include <atomic>
 #include <string>
+#include <vector>
 
 #define MAX_LENGTH 512
 
@@ -15,14 +16,15 @@ class Sender
 {
 private:
     std::atomic<bool> active;
-    int tSocketFd;
-    struct sockaddr_in tSocketAddr;
+    int size;
+    std::vector<int> tSocketFds;
+    std::vector<sockaddr_in> tSocketAddrs;
 
 public:
-    Sender(sockaddr_in tAddr);
+    Sender(std::vector<sockaddr_in> tAddrs);
     ~Sender();
 
-    ssize_t send(const std::string & m);
+    ssize_t send(const std::string & m, int id);
 
     void start();
     void stop();

@@ -4,7 +4,7 @@
 #include <string.h>
 
 Receiver::Receiver(in_addr_t ip, unsigned short port){
-    active = true;
+    active = false;
 
     // socket init
     socketFd = socket(AF_INET, SOCK_DGRAM, 0);

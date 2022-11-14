@@ -6,13 +6,14 @@
 #include "hello.h"
 #include <signal.h>
 
-#include "perfectLink.h"
+#include "beb.h"
 
 std::string outputPath;
 Process* p = nullptr;
 Receiver* rec = nullptr;
-std::vector<Sender*> senders;
-std::vector<PerfectLink*> links;
+Sender* sen = nullptr;
+PerfectLink* pl = nullptr;
+Beb* beb = nullptr;
 
 sockaddr_in getAddr(in_addr_t ip, unsigned short port);
 void writeLog();
@@ -73,13 +74,8 @@ static void stop(int) {
 
   if (p != nullptr)
     p->stop();
-  if (rec != nullptr)
-    rec->stop();
-  for (auto& link: links) {
-    if (link != nullptr) 
-      link->stop();
-  }
-
+  if (beb != nullptr)
+    beb->stop();
   // write/flush output file if necessary
   std::cout << "Writing output.\n";
 
@@ -139,25 +135,26 @@ int main(int argc, char **argv) {
   p = new Process(static_cast<int>(pid));
   rec = new Receiver(hosts[pid-1].ip, hosts[pid-1].port);
 
+  std::vector<sockaddr_in> addrs;
+  std::vector<int> ids;
   for (auto& host : hosts){
     if (host.id == pid){
-      senders.push_back(nullptr);
-      links.push_back(nullptr);
-      continue;
+      //senders.push_back(nullptr);
+      //links.push_back(nullptr);
+      //continue;
     }
-    Sender* sen = new Sender(getAddr(host.ip, host.port));
-    PerfectLink* link = new PerfectLink(static_cast<int>(pid), static_cast<int>(host.id), rec, sen, p);
-    senders.push_back(sen);
-    links.push_back(link);
+    addrs.push_back(getAddr(host.ip, host.port));
+    ids.push_back(static_cast<int>(host.id));
+    //Sender* sen = new Sender(getAddr(host.ip, host.port));
+    //PerfectLink* link = new PerfectLink(static_cast<int>(pid), static_cast<int>(host.id), rec, sen, p);
+    //senders.push_back(sen);
+    //links.push_back(link);
   }
-  for (auto& link: links) {
-    if (link != nullptr) {
-      link->setOthers(links);
-    }
-  }
-  //std::cout << "here" << "\n";
-
-  std::string _num, _tPid;
+  sen = new Sender(addrs);
+  pl= new PerfectLink(static_cast<int>(pid), ids, rec, sen);
+  beb = new Beb(static_cast<int>(pid), ids, pl, p);
+  pl->setBroadcast(beb);
+  std::string _num;
   std::string line;
   std::ifstream readFile(parser.configPath());
 
@@ -165,29 +162,14 @@ int main(int argc, char **argv) {
   while(getline(readFile,line))   {
       std::stringstream iss(line);
       getline(iss, _num, ' ');
-      getline(iss, _tPid, '\n');
   }
   readFile.close();
 
   //add msg
   unsigned long num = static_cast<unsigned long>(std::stoi(_num));
-  unsigned long tPid = static_cast<unsigned long>(std::stoi(_tPid));
-
-  if (pid != tPid){
-    for (unsigned int i = 1; i <= num; ++i){
-      char msg[MAX_LENGTH] = {0};
-      int ack = 0;
-      sprintf(msg, "%-1d%03lu%03lu%-d", ack, pid, tPid, i);
-      links[tPid-1]->addMsg(msg);
-    }
-    //std::cout << pid << " add " << num << " msgs to " << tPid << "\n";
-  }
-
-  for (auto& link: links) {
-    if (link != nullptr) {
-      link->start();
-    }
-  }
+  //unsigned long tPid = static_cast<unsigned long>(std::stoi(_tPid));
+  beb->addMsg(num);
+  beb->start();
 
   // After a process finishes broadcasting,
   // it waits forever for the delivery of messages.
