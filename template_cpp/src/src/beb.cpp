@@ -1,4 +1,5 @@
 #include "beb.h"
+#include "urb.h"
 
 #include <iostream>
 
@@ -11,6 +12,10 @@ Beb::Beb(int _pid, std::vector<int> _targetPids, PerfectLink * _pl, Process* _p)
 }
 
 Beb::~Beb(){}
+
+void Beb::setUpper(Urb* _urb){
+    urb = _urb;
+}
 
 void Beb::start(){
     active = true;
@@ -47,6 +52,20 @@ void Beb::addMsg(unsigned long num){
     }
 }
 
-void Beb::deliver(const std::string & m){
-    p->addLog(m);
+void Beb::broadcast(const std::string& msg){
+    int nump = static_cast<int>(targetPids.size());
+    for (int i = 0; i < nump; ++i){
+        int tPid = targetPids[i];
+        if (tPid == pid)
+            continue;
+        char hm[MAX_LENGTH] = {0};
+        int ack = 0;
+        sprintf(hm, "%-1d%03lu%03lu", ack, static_cast<unsigned long>(pid), static_cast<unsigned long>(tPid));
+        std::string hmp(hm);
+        pl->addMsg(hmp + msg);
+    }
+}
+
+void Beb::deliver(const std::string & msg){
+    urb->deliverLower(msg);
 }

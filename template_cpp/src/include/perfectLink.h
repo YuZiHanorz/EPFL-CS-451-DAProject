@@ -31,7 +31,7 @@ private:
 
     std::list<std::string> pendingMsgs, pendingAcks;
 
-    std::mutex logMutex, msgMutex, ackMutex, linkMutex;
+    std::mutex logMutex, msgMutex, ackMutex;
 
     std::thread recThread;
     std::thread sendThread;
@@ -46,12 +46,12 @@ public:
     void sendT();
     void recT();
 
+    void setUpper(Beb* _beb);
     void start();
     void stop();
 
     void addMsg(const std::string& msg);
     void addMsgs(const std::list<std::string>& msgs);
-    void setBroadcast(Beb* _beb);
 };
 
 #endif // pLink

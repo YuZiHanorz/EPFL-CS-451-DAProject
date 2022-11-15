@@ -6,7 +6,7 @@
 #include "hello.h"
 #include <signal.h>
 
-#include "beb.h"
+#include "urb.h"
 
 std::string outputPath;
 Process* p = nullptr;
@@ -14,6 +14,7 @@ Receiver* rec = nullptr;
 Sender* sen = nullptr;
 PerfectLink* pl = nullptr;
 Beb* beb = nullptr;
+Urb* urb = nullptr;
 
 sockaddr_in getAddr(in_addr_t ip, unsigned short port);
 void writeLog();
@@ -44,12 +45,12 @@ void writeLog() {
     std::string payload;
     switch (logType){
     case 'b':
-      payload = log.substr(7, log.size());
+      payload = log.substr(1, log.size());
       o << "b " << payload << "\n";
       break;
     case 'd':
       msgSpid = stoi(log.substr(1, 3));
-      payload = log.substr(7, log.size());
+      payload = log.substr(4, log.size());
       o << "d " << msgSpid << " " << payload << "\n";
       break;
     default:
@@ -75,7 +76,7 @@ static void stop(int) {
   if (p != nullptr)
     p->stop();
   if (beb != nullptr)
-    beb->stop();
+    urb->stop();
   // write/flush output file if necessary
   std::cout << "Writing output.\n";
 
@@ -153,7 +154,10 @@ int main(int argc, char **argv) {
   sen = new Sender(addrs);
   pl= new PerfectLink(static_cast<int>(pid), ids, rec, sen);
   beb = new Beb(static_cast<int>(pid), ids, pl, p);
-  pl->setBroadcast(beb);
+  pl->setUpper(beb);
+  urb = new Urb(static_cast<int>(pid), ids, beb, p);
+  beb->setUpper(urb);
+
   std::string _num;
   std::string line;
   std::ifstream readFile(parser.configPath());
@@ -168,8 +172,8 @@ int main(int argc, char **argv) {
   //add msg
   unsigned long num = static_cast<unsigned long>(std::stoi(_num));
   //unsigned long tPid = static_cast<unsigned long>(std::stoi(_tPid));
-  beb->addMsg(num);
-  beb->start();
+  urb->addMsg(num);
+  urb->start();
 
   // After a process finishes broadcasting,
   // it waits forever for the delivery of messages.

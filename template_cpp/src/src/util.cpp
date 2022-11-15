@@ -2,7 +2,13 @@
 
 #include <algorithm>
 
-SafeList::SafeList(){}
+SafeList::SafeList(){
+    s = 0;
+}
+
+SafeList::SafeList(const SafeList & sl){
+    s = 0;
+}
 
 SafeList::~SafeList(){}
 
@@ -17,10 +23,17 @@ void SafeList::push_back(const std::string &str) {
     std::lock_guard<std::mutex> lock(_listMutex);
 
     _list.push_back(str);
+    s += 1;
 }
 
 std::list<std::string> SafeList::get() const {
     std::lock_guard<std::mutex> lock(_listMutex);
 
     return _list;
+}
+
+int SafeList::getSize() const{
+    std::lock_guard<std::mutex> lock(_listMutex);
+    
+    return s;
 }

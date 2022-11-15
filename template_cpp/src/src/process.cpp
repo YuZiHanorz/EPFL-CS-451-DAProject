@@ -17,7 +17,7 @@ void Process::addLog(const std::string& msg){
     if (log.contains(msg))
         return;
     log.push_back(msg);
-    std::cout << "add log" << msg << "\n";
+    std::cout << pid << " add log " << msg << "\n";
 }
 
 std::list<std::string> Process::getLogs() const{

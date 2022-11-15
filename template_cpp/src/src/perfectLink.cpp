@@ -17,7 +17,7 @@ PerfectLink::PerfectLink(int _pid, std::vector<int> _targetPids, Receiver* _rec,
 
 PerfectLink::~PerfectLink(){}
 
-void PerfectLink::setBroadcast(Beb* _beb){
+void PerfectLink::setUpper(Beb* _beb){
     beb = _beb;
 }
 
@@ -66,7 +66,7 @@ void PerfectLink::sendT(){
                         std::cerr << "wrong msg send: " << m;
                         exit(0);
                     }
-                    std::cout << pid << " send msg " << m << "\n";
+                    //std::cout << pid << " send msg " << m << "\n";
                     sen->send(m, msgTpid);
                     //std::this_thread::sleep_for(std::chrono::milliseconds(1));
                 }
@@ -87,7 +87,7 @@ void PerfectLink::sendT(){
                         std::cerr << "wrong ack send: " << a;
                         exit(0);
                     }
-                    std::cout << pid << " send ack " << a << "\n";
+                    //std::cout << pid << " send ack " << a << "\n";
                     sen->send(a, msgSpid);
                     //std::this_thread::sleep_for(std::chrono::milliseconds(1));
                 }
@@ -116,16 +116,16 @@ void PerfectLink::recT(){
             if(pid == msgTpid &&  ack == "0"){ //receive a msg from the other end of the link
                 if (beb != nullptr){
                     std::lock_guard<std::mutex> lock(logMutex);
-                    std::string logMsg = 'd' + deliverMsg;
-                    beb->deliver(logMsg);
+                    //std::string logMsg = 'd' + deliverMsg;
+                    beb->deliver(deliverMsg);
                 }
-                std::cout << pid << " receive " << res  << "\n";
+                //std::cout << pid << " receive " << res  << "\n";
                 res[0] = '1';
                 std::lock_guard<std::mutex> lock(ackMutex);
                 pendingAcks.push_back(res);
             }
             else if (pid == msgSpid && ack == "1"){ //receive an ack from the other end
-                std::cout << pid << " receive ack " << res  << "\n";
+                //std::cout << pid << " receive ack " << res  << "\n";
                 res[0] = '0';
                 std::lock_guard<std::mutex> lock(msgMutex);
                 pendingMsgs.remove(res);

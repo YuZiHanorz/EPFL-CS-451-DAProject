@@ -3,7 +3,7 @@
 
 include_directories(include)
 set(SOURCES src/main.cpp src/hello.c src/util.cpp src/sender.cpp src/receiver.cpp 
-            src/process.cpp src/perfectLink.cpp src/beb.cpp)
+            src/process.cpp src/perfectLink.cpp src/beb.cpp src/urb.cpp)
 
 # DO NOT EDIT THE FOLLOWING LINES
 find_package(Threads)
