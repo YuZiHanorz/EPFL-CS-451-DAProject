@@ -133,5 +133,6 @@ void PerfectLink::recT(){
             else 
                 std::cerr << "receive unexpected message "<< res << "\n"; 
         }
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }

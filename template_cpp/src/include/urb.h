@@ -3,6 +3,8 @@
 
 #include "beb.h"
 #include "util.h"
+#include <unordered_map>
+#include <set>
 
 class Urb
 {
@@ -14,9 +16,9 @@ private:
     Beb* beb;
     Process* p;
 
-    SafeList delivered;
-    SafeList pending;
-    std::vector<SafeList> ack;
+    std::set<std::string> delivered;
+    std::set<std::string> pending;
+    std::unordered_map<std::string, std::set<std::string>> ack;
 
     std::thread deliverThread;
     std::mutex ackMutex, penMutex;
@@ -32,7 +34,7 @@ public:
     void broadcast(const std::string& msg);
     void deliverLower(const std::string & msg);
 
-    bool canDeliver(int idx);
+    bool canDeliver(const std::string & sm);
 
     void deliverT();
 };
