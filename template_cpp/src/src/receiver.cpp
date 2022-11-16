@@ -40,7 +40,7 @@ ssize_t Receiver::receive(char* buffer){
         reinterpret_cast<struct sockaddr*>(&sAddr), &sAddrLen);
 
     if (ret < 0)
-        std::cerr << "Receive failed" << "\n";
+        std::cerr << "Receive failed " << ret << "\n";
     else
         strncpy(buffer, tmpBuffer, sizeof(tmpBuffer));
     

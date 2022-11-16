@@ -6,7 +6,7 @@
 #include "hello.h"
 #include <signal.h>
 
-#include "urb.h"
+#include "fiforb.h"
 
 std::string outputPath;
 Process* p = nullptr;
@@ -15,6 +15,7 @@ Sender* sen = nullptr;
 PerfectLink* pl = nullptr;
 Beb* beb = nullptr;
 Urb* urb = nullptr;
+Fiforb* fb = nullptr;
 
 sockaddr_in getAddr(in_addr_t ip, unsigned short port);
 void writeLog();
@@ -76,7 +77,7 @@ static void stop(int) {
   if (p != nullptr)
     p->stop();
   if (beb != nullptr)
-    urb->stop();
+    fb->stop();
   // write/flush output file if necessary
   std::cout << "Writing output.\n";
 
@@ -157,6 +158,8 @@ int main(int argc, char **argv) {
   pl->setUpper(beb);
   urb = new Urb(static_cast<int>(pid), ids, beb, p);
   beb->setUpper(urb);
+  fb = new Fiforb(static_cast<int>(pid), ids, urb, p);
+  urb->setUpper(fb);
 
   std::string _num;
   std::string line;
@@ -172,8 +175,15 @@ int main(int argc, char **argv) {
   //add msg
   unsigned long num = static_cast<unsigned long>(std::stoi(_num));
   //unsigned long tPid = static_cast<unsigned long>(std::stoi(_tPid));
-  urb->addMsg(num);
-  urb->start();
+  fb->start();
+  int numM = static_cast<int>(num);
+  for (int i = 1; i <= numM; ++i){
+    //char msg[MAX_LENGTH] = {0};
+    //sprintf(msg, "%03lu%-d", static_cast<unsigned long>(pid), i);
+    std::string msg = std::to_string(i);
+    fb->broadcast(msg);
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+  }
 
   // After a process finishes broadcasting,
   // it waits forever for the delivery of messages.

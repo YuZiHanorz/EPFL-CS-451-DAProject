@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <set>
 
+class Fiforb;
+
 class Urb
 {
 private:
@@ -15,6 +17,7 @@ private:
     std::vector<int> targetPids;
     Beb* beb;
     Process* p;
+    Fiforb* fb;
 
     std::set<std::string> delivered;
     std::set<std::string> pending;
@@ -27,6 +30,7 @@ public:
     Urb(int _pid, std::vector<int> _targetPids, Beb* _beb, Process* _p);
     ~Urb();
 
+    void setUpper(Fiforb* _fb);
     void start();
     void stop();
 

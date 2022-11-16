@@ -1,4 +1,5 @@
 #include "urb.h"
+#include "fiforb.h"
 #include <iostream>
 #include <string>
 
@@ -13,6 +14,10 @@ Urb::Urb(int _pid, std::vector<int> _targetPids, Beb* _beb, Process* _p){
 }
 
 Urb::~Urb(){}
+
+void Urb::setUpper(Fiforb* _fb){
+    fb = _fb;
+}
 
 void Urb::start(){
     active = true;
@@ -45,31 +50,41 @@ void Urb::addMsg(unsigned long num){
 }
 
 void Urb::broadcast(const std::string & msg){
-    
+    if (!active){
+        std::cerr << "urb tried to broadcast when stop" << "\n";
+        return;
+    }
+    char head[MAX_LENGTH] = {0};
+    sprintf(head, "%03lu", static_cast<unsigned long>(pid));
+    pending.insert(head + msg);
+    beb->broadcast(head + msg);
+    //std::cout << pid << " urb broadcast " << head+msg << "\n";
 }
 
 
 void Urb::deliverLower(const std::string & msg){
-    std::cout << pid << " urb defliver from beb " << msg << "\n";
+    //std::cout << pid << " urb defliver from beb " << msg << "\n";
     int msgSpid = stoi(msg.substr(0, 3));
     int msgTpid = stoi(msg.substr(3, 3)); // = pid
     std::string sm = msg.substr(6, msg.size());
+    std::string m = msg.substr(9, msg.size());
+
     //int s = stoi(msg.substr(6, 3));
     //int m = stoi(msg.substr(9, msg.size()));
     
     if (1){
         std::lock_guard<std::mutex> lock(ackMutex);
         std::string p = std::to_string(msgSpid);
-        auto iter = ack.find(sm);
+        auto iter = ack.find(m);
         if (iter != ack.end()){
             if (!iter->second.count(p))
                 iter->second.insert(p);
         }
         else {
             std::set<std::string> st{p};
-            ack[sm] = st;
+            ack[m] = st;
         }
-        std::cout << pid << " ack add " << sm  << " " << p << "\n";
+        std::cerr << pid  << "\n";
     }
     //char sm[MAX_LENGTH] = {0};
     //sprintf(sm, "%03lu%-d", static_cast<unsigned long>(s), m);
@@ -78,7 +93,7 @@ void Urb::deliverLower(const std::string & msg){
         std::lock_guard<std::mutex> lock(penMutex);
         if (!pending.count(sm)){
             pending.insert(sm);
-            std::cout << pid << " urb broadcast when deliver from beb " << sm << "\n";
+            //std::cout << pid << " urb broadcast when deliver from beb " << sm << "\n";
             beb->broadcast(sm);
         }
     }
@@ -87,7 +102,7 @@ void Urb::deliverLower(const std::string & msg){
 bool Urb::canDeliver(const std::string & sm){
     int N = static_cast<int>(targetPids.size());
     std::lock_guard<std::mutex> lock(ackMutex);
-    return static_cast<int>(ack[sm].size()) > N / 2;
+    return static_cast<int>(ack[sm].size()) >= N / 2;
 }
 
 void Urb::deliverT(){
@@ -104,13 +119,15 @@ void Urb::deliverT(){
             //int s = stoi(sm.substr(0, 3));
             //int m = stoi(sm.substr(3, sm.size()));
             //int idx = (s-1) * numM + m - 1;
-            if (!delivered.count(sm) && canDeliver(sm)){
-                delivered.insert(sm);
-                std::cout << pid << " urb deliver " <<sm << "\n";
-                if (p != nullptr){
-                    std::string logMsg = 'd' + sm;
-                    p->addLog(logMsg);
-                }
+            std::string m = sm.substr(3, sm.size());
+            if (!delivered.count(m) && canDeliver(m)){
+                delivered.insert(m);
+                fb->deliverLower(m);
+                //std::cout << pid << " urb deliver " << m << "\n";
+                //if (p != nullptr){
+                //    std::string logMsg = 'd' + m;
+                //    p->addLog(logMsg);
+                //}
             }
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1));

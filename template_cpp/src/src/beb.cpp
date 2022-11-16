@@ -53,6 +53,10 @@ void Beb::addMsg(unsigned long num){
 }
 
 void Beb::broadcast(const std::string& msg){
+    if (!active){
+        std::cerr << "beb tried to broadcast when stop" << "\n";
+        return;
+    }
     int nump = static_cast<int>(targetPids.size());
     for (int i = 0; i < nump; ++i){
         int tPid = targetPids[i];

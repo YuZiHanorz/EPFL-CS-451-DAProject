@@ -15,7 +15,7 @@ private:
     Urb* urb;
     Process* p;
 
-    SafeList pending;
+    std::set<std::string> pending;
     int lsn;
     std::vector<int> next;
 
