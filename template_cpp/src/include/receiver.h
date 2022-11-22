@@ -12,7 +12,7 @@
 
 #include "util.h"
 
-#define MAX_LENGTH 512
+#define MAX_LENGTH 1024
 
 class Receiver
 {

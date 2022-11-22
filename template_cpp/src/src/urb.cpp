@@ -84,7 +84,9 @@ void Urb::deliverLower(const std::string & msg){
             std::set<std::string> st{p};
             ack[m] = st;
         }
-        std::cerr << pid  << "\n";
+        //int dd = pid;
+        //std::cout << pid  << "\n";
+        //std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     //char sm[MAX_LENGTH] = {0};
     //sprintf(sm, "%03lu%-d", static_cast<unsigned long>(s), m);

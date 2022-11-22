@@ -115,7 +115,7 @@ void PerfectLink::recT(){
 
             if(pid == msgTpid &&  ack == "0"){ //receive a msg from the other end of the link
                 if (beb != nullptr){
-                    std::lock_guard<std::mutex> lock(logMutex);
+                    //std::lock_guard<std::mutex> lock(logMutex);
                     //std::string logMsg = 'd' + deliverMsg;
                     beb->deliver(deliverMsg);
                 }
