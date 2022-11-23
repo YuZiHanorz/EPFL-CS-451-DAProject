@@ -70,22 +70,29 @@ void Fiforb::deliverLower(const std::string & msg){
 
     //std::cout << "fifob delivered lower " << msg <<"\n";
     std::set<std::string> rem;
-    for (auto& hm: pending){
-        size_t pos2 = hm.find('-');
-        if (pos >= hm.size()){
-            std::cerr << "wtf with the fifo msg " << hm << "\n";
-        }
-        int sn2 = stoi(hm.substr(0, pos2));
-        int s2 = stoi(hm.substr(pos2 + 1, 3));
-        if (s2 == s and sn2 == next[s-1]) {
-            next[s-1] += 1;
-            rem.insert(hm);
-            //std::cout << pid << " fifob deliver " << hm << "\n";
-            if (p != nullptr){
-                std::string logMsg = 'd' + hm.substr(pos2 + 1, hm.size());
-                p->addLog(logMsg);
+    bool flag;
+    while (true){
+        flag = true;
+        for (auto& hm: pending){
+            size_t pos2 = hm.find('-');
+            if (pos >= hm.size()){
+                std::cerr << "wtf with the fifo msg " << hm << "\n";
+            }
+            int sn2 = stoi(hm.substr(0, pos2));
+            int s2 = stoi(hm.substr(pos2 + 1, 3));
+            if (s2 == s and sn2 == next[s-1]) {
+                flag = false;
+                next[s-1] += 1;
+                rem.insert(hm);
+                std::cout << pid << " fifob deliver " << hm << "\n";
+                if (p != nullptr){
+                    std::string logMsg = 'd' + hm.substr(pos2 + 1, hm.size());
+                    p->addLog(logMsg);
+                }
             }
         }
+        if (flag)
+            break;
     }
     for (auto& r : rem){
         pending.erase(r);

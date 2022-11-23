@@ -68,7 +68,7 @@ void PerfectLink::sendT(){
                     }
                     //std::cout << pid << " send msg " << m << "\n";
                     sen->send(m, msgTpid);
-                    //std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1));
                 }
             }
         }
@@ -89,7 +89,7 @@ void PerfectLink::sendT(){
                     }
                     //std::cout << pid << " send ack " << a << "\n";
                     sen->send(a, msgSpid);
-                    //std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1));
                 }
                 pendingAcks.clear();
             }
