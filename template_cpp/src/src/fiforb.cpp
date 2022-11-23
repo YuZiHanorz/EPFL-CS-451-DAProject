@@ -84,7 +84,7 @@ void Fiforb::deliverLower(const std::string & msg){
                 flag = false;
                 next[s-1] += 1;
                 rem.insert(hm);
-                std::cout << pid << " fifob deliver " << hm << "\n";
+                //std::cout << pid << " fifob deliver " << hm << "\n";
                 if (p != nullptr){
                     std::string logMsg = 'd' + hm.substr(pos2 + 1, hm.size());
                     p->addLog(logMsg);
