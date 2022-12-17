@@ -6,7 +6,7 @@
 #include "hello.h"
 #include <signal.h>
 
-#include "fiforb.h"
+#include "latagr.h"
 
 std::string outputPath;
 Process* p = nullptr;
@@ -14,8 +14,7 @@ Receiver* rec = nullptr;
 Sender* sen = nullptr;
 PerfectLink* pl = nullptr;
 Beb* beb = nullptr;
-Urb* urb = nullptr;
-Fiforb* fb = nullptr;
+LatticeAgr* lag = nullptr;
 
 sockaddr_in getAddr(in_addr_t ip, unsigned short port);
 void writeLog();
@@ -39,26 +38,63 @@ void writeLog() {
     return;
   
   std::list<std::string> logs = p->getLogs();
+  int pnum = static_cast<int>(logs.size());
+  std::unordered_map<int, std::set<std::string>> decision;
   for (auto& log: logs){
-    char logType = log[0];
-    //std::cout << "the log is " << log << "\n";
-    int msgSpid;
-    std::string payload;
-    switch (logType){
-    case 'b':
-      payload = log.substr(1, log.size());
-      o << "b " << payload << "\n";
-      break;
-    case 'd':
-      msgSpid = stoi(log.substr(1, 3));
-      payload = log.substr(4, log.size());
-      o << "d " << msgSpid << " " << payload << "\n";
-      break;
-    default:
-      std::cerr << "wtf with this log " << log << "\n";
-      break;
+    size_t pos = log.find('d');
+    int idx = stoi(log.substr(0, pos));
+    std::string pp = log.substr(pos+1, log.size());
+    std::stringstream ss(pp);
+    std::string item;
+    std::set<std::string> tmp;
+    while (std::getline(ss, item, ',')) {
+        tmp.insert(item);
     }
+    auto iter = decision.find(idx);
+    if (iter != decision.end()){
+      std::cerr << "what the fuck with the log " << log <<"\n";
+    }
+    //std::cout << idx << " " << log << "\n";
+    decision[idx] = tmp;
   }
+  for (int i = 0; i < pnum; ++i){
+    bool flag = true;
+    auto iter = decision.find(i);
+    if (iter == decision.end()){
+      std::cerr << "what the fuck cannot find prop " << "\n";
+    }
+    for (auto &e : decision[i]){
+      if (flag){
+        o << e;
+        flag = false;
+      }
+      else{
+        o << " " << e;
+      }
+    }
+    o << "\n";
+  }
+
+  //for (auto& log: logs){
+    //char logType = log[0];
+    //std::cout << "the log is " << log << "\n";
+    //int msgSpid;
+    //std::string payload;
+    //switch (logType){
+    //case 'b':
+      //payload = log.substr(1, log.size());
+      //o << "b " << payload << "\n";
+      //break;
+    //case 'd':
+      //msgSpid = stoi(log.substr(1, 3));
+      //payload = log.substr(4, log.size());
+      //o << "d " << msgSpid << " " << payload << "\n";
+      //break;
+    //default:
+      //std::cerr << "wtf with this log " << log << "\n";
+      //break;
+    //}
+  //}
   std::ofstream fs;
   fs.open(outputPath);
   fs << o.str(); 
@@ -77,7 +113,7 @@ static void stop(int) {
   if (p != nullptr)
     p->stop();
   if (beb != nullptr)
-    fb->stop();
+    lag->stop();
   // write/flush output file if necessary
   std::cout << "Writing output.\n";
 
@@ -156,34 +192,47 @@ int main(int argc, char **argv) {
   pl= new PerfectLink(static_cast<int>(pid), ids, rec, sen);
   beb = new Beb(static_cast<int>(pid), ids, pl, p);
   pl->setUpper(beb);
-  urb = new Urb(static_cast<int>(pid), ids, beb, p);
-  beb->setUpper(urb);
-  fb = new Fiforb(static_cast<int>(pid), ids, urb, p);
-  urb->setUpper(fb);
+  lag = new LatticeAgr(static_cast<int>(pid), ids, beb, p);
+  beb->setUpper(lag);
 
-  std::string _num;
+  int propnum, vs, ds;
   std::string line;
   std::ifstream readFile(parser.configPath());
-
+  std::vector<std::set<std::string>> prop;
+  
   //read config
+  bool first = true;
   while(getline(readFile,line))   {
       std::stringstream iss(line);
-      getline(iss, _num, ' ');
+      if (first){
+        iss >> propnum;
+        iss >> vs;
+        iss >> ds;
+        first = false;
+      }
+      else {
+        std::string tmp;
+        std::set<std::string> st;
+        while (iss >> tmp)
+          st.insert(tmp);
+        prop.push_back(st);
+      }
   }
   readFile.close();
 
   //add msg
-  unsigned long num = static_cast<unsigned long>(std::stoi(_num));
+  //unsigned long num = static_cast<unsigned long>(std::stoi(_num));
   //unsigned long tPid = static_cast<unsigned long>(std::stoi(_tPid));
-  fb->start();
-  int numM = static_cast<int>(num);
-  for (int i = 1; i <= numM; ++i){
+  lag->start();
+  lag->propose(prop);
+  //int numM = static_cast<int>(num);
+  //for (int i = 1; i <= numM; ++i){
     //char msg[MAX_LENGTH] = {0};
     //sprintf(msg, "%03lu%-d", static_cast<unsigned long>(pid), i);
-    std::string msg = std::to_string(i);
-    fb->broadcast(msg);
-    std::this_thread::sleep_for(std::chrono::milliseconds(5));
-  }
+    //std::string msg = std::to_string(i);
+    //fb->broadcast(msg);
+    //std::this_thread::sleep_for(std::chrono::milliseconds(5));
+  //}
 
   // After a process finishes broadcasting,
   // it waits forever for the delivery of messages.

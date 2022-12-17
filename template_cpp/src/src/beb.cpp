@@ -1,5 +1,5 @@
 #include "beb.h"
-#include "urb.h"
+#include "latagr.h"
 
 #include <iostream>
 
@@ -13,8 +13,8 @@ Beb::Beb(int _pid, std::vector<int> _targetPids, PerfectLink * _pl, Process* _p)
 
 Beb::~Beb(){}
 
-void Beb::setUpper(Urb* _urb){
-    urb = _urb;
+void Beb::setUpper(LatticeAgr* _lag){
+    lag = _lag;
 }
 
 void Beb::start(){
@@ -71,5 +71,5 @@ void Beb::broadcast(const std::string& msg){
 }
 
 void Beb::deliver(const std::string & msg){
-    urb->deliverLower(msg);
+    lag->deliverLower(msg);
 }

@@ -3,7 +3,7 @@
 
 #include "perfectLink.h"
 
-class Urb;
+class LatticeAgr;
 
 class Beb
 {
@@ -13,13 +13,13 @@ private:
     std::vector<int> targetPids;
     PerfectLink * pl;
     Process* p;
-    Urb* urb;
+    LatticeAgr* lag;
 
 public:
     Beb(int _pid, std::vector<int> _targetPids, PerfectLink* _pl, Process* _p);    
     ~Beb();
 
-    void setUpper(Urb* _urb);
+    void setUpper(LatticeAgr* _lag);
     void start();
     void stop();
 
